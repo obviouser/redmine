@@ -1,0 +1,17 @@
+---
+- hosts: all
+  sudo: true
+  tasks:
+  - name: installing prerequisites
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+    - subversion
+    - curl
+    - wget
+    - git-core
+  - name: installing rvm
+    command: curl -sSL https://rvm.io/mpapis.asc | gpg --import - && curl -L https://get.rvm.io | sudo bash -s stable   
+  - name: loading rvm
+    command: source /usr/local/rvm/scripts/rvm && echo '[[ -s "/usr/local/rvm/scripts/rvm" ]] && source "/usr/local/rvm/scripts/rvm"' >> ~/.bashrc
+  - name: installing ruby
+    command curl -sSL https://rvm.io/mpapis.asc | gpg --import - && rvm get head && rvm install ruby-2.3 
