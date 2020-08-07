@@ -19,6 +19,8 @@ RUN echo '[[ -s "/usr/local/rvm/scripts/rvm" ]] && source "/usr/local/rvm/script
 
 RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 
+RUN ln -s /usr/local/rvm/bin/rvm /usr/bin/rvm
+
 #RUN rvm get head
 
 #RUN rvm install ruby-2.3
