@@ -31,11 +31,11 @@ RUN gem install passenger --no-ri --no-rdoc
 
 RUN passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
 
-#RUN ln -s /opt/nginx/sbin/nginx /usr/bin/nginx
+RUN ln -s /opt/nginx/sbin/nginx /usr/bin/nginx
 
-#RUN gem install bundler --no-ri --no-rdoc
+RUN gem install bundler --no-ri --no-rdoc
 
-#RUN bundle install /var/data/redmine/
+#RUN bundle install 
 
 #RUN mkdir $WORKDIR/public/plugin_assets
 
