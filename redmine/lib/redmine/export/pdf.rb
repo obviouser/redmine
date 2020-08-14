@@ -52,7 +52,6 @@ module Redmine
         end
 
         def SetFont(family, style='', size=0, fontfile='')
-          style = +style
           # FreeSerif Bold Thai font has problem.
           style.delete!('B') if family.to_s.casecmp('freeserif') == 0
           # DejaVuSans Italic Arabic and Persian font has problem.
@@ -93,7 +92,7 @@ module Redmine
           </style>'
 
           # Strip {{toc}} tags
-          txt = txt.gsub(/<p>\{\{((<|&lt;)|(>|&gt;))?toc\}\}<\/p>/i, '')
+          txt = txt.gsub(/<p>\{\{([<>]?)toc\}\}<\/p>/i, '')
           writeHTMLCell(w, h, x, y, css_tag + txt, border, ln, fill)
         end
 

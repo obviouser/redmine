@@ -115,10 +115,10 @@ module SortHelper
 
     if column.to_s == @sort_criteria.first_key
       if @sort_criteria.first_asc?
-        css = 'sort asc icon icon-sorted-desc'
+        css = 'sort asc'
         order = 'desc'
       else
-        css = 'sort desc icon icon-sorted-asc'
+        css = 'sort desc'
         order = 'asc'
       end
     end

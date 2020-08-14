@@ -44,8 +44,7 @@ module TimelogHelper
 
   def user_collection_for_select_options(time_entry)
     collection = time_entry.assignable_users
-    collection << time_entry.user if time_entry.user && !collection.include?(time_entry.user)
-    principals_options_for_select(collection, time_entry.user_id.to_s)
+    principals_options_for_select(collection, time_entry.user_id)
   end
 
   def select_hours(data, criteria, value)
@@ -69,15 +68,7 @@ module TimelogHelper
       "[#{l(:label_none)}]"
     elsif k = criteria_options[:klass]
       obj = k.find_by_id(value.to_i)
-      if obj.is_a?(Issue)
-        if obj.visible?
-          html ? link_to_issue(obj) : "#{obj.tracker} ##{obj.id}: #{obj.subject}"
-        else
-          "##{obj.id}"
-        end
-      else
-        format_object(obj, html)
-      end
+      format_object(obj, html)
     elsif cf = criteria_options[:custom_field]
       format_value(value, cf)
     else

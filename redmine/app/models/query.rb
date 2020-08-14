@@ -609,18 +609,13 @@ class Query < ActiveRecord::Base
     if project
       project.rolled_up_custom_fields
     else
-      IssueCustomField.sorted
+      IssueCustomField.all
     end
   end
 
   # Returns a scope of project custom fields that are available as columns or filters
   def project_custom_fields
-    ProjectCustomField.sorted
-  end
-
-  # Returns a scope of time entry custom fields that are available as columns or filters
-  def time_entry_custom_fields
-    TimeEntryCustomField.sorted
+    ProjectCustomField.all
   end
 
   # Returns a scope of project statuses that are available as columns or filters
@@ -847,12 +842,7 @@ class Query < ActiveRecord::Base
   def group_by_sort_order
     if column = group_by_column
       order = (sort_criteria.order_for(column.name) || column.default_order || 'asc').try(:upcase)
-
-      column_sortable = column.sortable
-      if column.is_a?(TimestampQueryColumn)
-        column_sortable = Redmine::Database.timestamp_to_date(column.sortable, User.current.time_zone)
-      end
-      Array(column_sortable).map {|s| Arel.sql("#{s} #{order}")}
+      Array(column.sortable).map {|s| Arel.sql("#{s} #{order}")}
     end
   end
 
@@ -924,7 +914,7 @@ class Query < ActiveRecord::Base
         end
       end
 
-      if field == 'project_id' || (self.type == 'ProjectQuery' && %w[id parent_id].include?(field))
+      if field == 'project_id' || (self.type == 'ProjectQuery' && field == 'id')
         if v.delete('mine')
           v += User.current.memberships.map(&:project_id).map(&:to_s)
         end

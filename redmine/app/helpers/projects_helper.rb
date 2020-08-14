@@ -170,7 +170,7 @@ module ProjectsHelper
       text = l(:button_project_bookmark)
     end
 
-    url = bookmark_project_path(project)
+    url = bookmark_project_url(project)
     link_to text, url, remote: true, method: method, class: css
   end
 

@@ -722,7 +722,7 @@ class Issue < ActiveRecord::Base
       errors.add :start_date, :earlier_than_minimum_start_date, :date => format_date(soonest_start)
     end
 
-    if project && fixed_version
+    if fixed_version
       if !assignable_versions.include?(fixed_version)
         errors.add :fixed_version_id, :inclusion
       elsif reopening? && fixed_version.closed?
@@ -737,7 +737,7 @@ class Issue < ActiveRecord::Base
       end
     end
 
-    if project && assigned_to_id_changed? && assigned_to_id.present?
+    if assigned_to_id_changed? && assigned_to_id.present?
       unless assignable_users.include?(assigned_to)
         errors.add :assigned_to_id, :invalid
       end
@@ -937,8 +937,6 @@ class Issue < ActiveRecord::Base
 
   # Users the issue can be assigned to
   def assignable_users
-    return [] if project.nil?
-
     users = project.assignable_users(tracker).to_a
     users << author if author && author.active?
     if assigned_to_id_was.present? && assignee = Principal.find_by_id(assigned_to_id_was)
@@ -950,7 +948,6 @@ class Issue < ActiveRecord::Base
   # Versions that the issue can be assigned to
   def assignable_versions
     return @assignable_versions if @assignable_versions
-    return [] if project.nil?
 
     versions = project.shared_versions.open.to_a
     if fixed_version
@@ -1707,12 +1704,12 @@ class Issue < ActiveRecord::Base
           if children.any?
             child_with_total_estimated_hours = children.select {|c| c.total_estimated_hours.to_f > 0.0}
             if child_with_total_estimated_hours.any?
-              average = child_with_total_estimated_hours.map(&:total_estimated_hours).sum.to_d / child_with_total_estimated_hours.count
+              average = child_with_total_estimated_hours.map(&:total_estimated_hours).sum.to_f / child_with_total_estimated_hours.count
             else
-              average = 1.0.to_d
+              average = 1.0
             end
             done = children.map {|c|
-              estimated = (c.total_estimated_hours || 0.0).to_d
+              estimated = c.total_estimated_hours.to_f
               estimated = average unless estimated > 0.0
               ratio = c.closed? ? 100 : (c.done_ratio || 0)
               estimated * ratio

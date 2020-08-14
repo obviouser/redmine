@@ -16,7 +16,9 @@ services:
     working_dir: /var/data/redmine
     volumes:
       - ./redmine:/var/data/redmine
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/redmine.conf
+      - ./nginx/redmine.conf:/etc/nginx/conf.d/redmine.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./dbdata/database.yml:/var/data/redmine/config/database.yml 
 #    command: apt-get update && apt-get install -y libmysqlclient-dev git-core subversion imagemagick libmagickwand-dev libcurl4-openssl-dev curl
 #    command: command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 #    command: command curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -

@@ -185,7 +185,6 @@ handleFileDropEvent.target = '';
 function dragOverHandler(e) {
   $(this).addClass('fileover');
   blockEventPropagation(e);
-  e.dataTransfer.dropEffect = 'copy';
 }
 
 function dragOutHandler(e) {
@@ -196,7 +195,6 @@ function dragOutHandler(e) {
 function setupFileDrop() {
   if (window.File && window.FileList && window.ProgressEvent && window.FormData) {
 
-    $.event.fixHooks.dragover = { props: [ 'dataTransfer' ] };
     $.event.fixHooks.drop = { props: [ 'dataTransfer' ] };
 
     $('form div.box:not(.filedroplistner)').has('input:file.filedrop').each(function() {
@@ -257,7 +255,7 @@ function copyImageFromClipboard(e) {
   if (!$(e.target).hasClass('wiki-edit')) { return; }
   var clipboardData = e.clipboardData || e.originalEvent.clipboardData
   if (!clipboardData) { return; }
-  if (clipboardData.types.some(function(t){ return /^text\/plain$/.test(t); })) { return; }
+  if (clipboardData.types.some(function(t){ return /^text/.test(t); })) { return; }
 
   var items = clipboardData.items
   for (var i = 0 ; i < items.length ; i++) {

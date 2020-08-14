@@ -120,7 +120,7 @@ class WorkflowsController < ApplicationController
   def find_roles
     ids = Array.wrap(params[:role_id])
     if ids == ['all']
-      @roles = Role.sorted.select(&:consider_workflow?)
+      @roles = Role.sorted.to_a
     elsif ids.present?
       @roles = Role.where(:id => ids).to_a
     end

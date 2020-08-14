@@ -231,9 +231,8 @@ function resizableSubjectColumn(){
 }
 
 ganttEntryClick = function(e){
-  var icon_expander = e.target;
-  var subject = $(icon_expander.parentElement);
-  var subject_left = parseInt(subject.css('left')) + parseInt(icon_expander.offsetWidth);
+  var subject = $(e.target.parentElement);
+  var subject_left = parseInt(subject.css('left'));
   var target_shown = null;
   var target_top = 0;
   var total_height = 0;
