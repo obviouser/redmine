@@ -30,6 +30,11 @@ RUN /usr/local/rvm/bin/rvm install 2.5.0
 
 RUN /usr/local/rvm/bin/rvm use 2.5.0 --default
 
+RUN apt-get install -y dirmngr gnupg && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7 && \
+    apt-get install -y apt-transport-https ca-certificates && \
+    echo deb https://oss-binaries.phusionpassenger.com/apt/passenger xenial main > /etc/apt/sources.list.d/passenger.list && \
+    apt-get update -q && apt-get install -y nginx-extras passenger
+
 
 
 
@@ -41,6 +46,7 @@ RUN /usr/local/rvm/bin/rvm use 2.5.0 --default
 #RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 
 #RUN command curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+
 
 #RUN curl -L https://get.rvm.io | bash -s stable
 
