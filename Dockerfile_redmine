@@ -1,11 +1,14 @@
-FROM ubuntu:18.04 
+FROM ubuntu:16.04 
 
 ENV WORKDIR=/var/data/redmine
 
 RUN apt-get update -q && \
-    apt-get install -qy curl libmysqlclient-dev subversion imagemagick libmagickwand-dev libcurl4-openssl-dev
+    apt-get install -qy curl libmysqlclient-dev subversion imagemagick libmagickwand-dev libcurl4-openssl-dev software-properties-common
 
-#RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+
+RUN apt-add-repository -y ppa:rael-gc/rvm && \
+    apt-get update -q && \
+    apt-get install -y rvm
 
 RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 
@@ -23,23 +26,44 @@ RUN ln -s /usr/local/rvm/bin/rvm /usr/bin/rvm
 
 RUN /usr/local/rvm/bin/rvm get head
 
-RUN /usr/local/rvm/bin/rvm install ruby-2.3
+RUN /usr/local/rvm/bin/rvm install 2.5.0
 
-RUN apt-get install -y libcurl4-gnutls-dev rubygems ruby-dev
+RUN /usr/local/rvm/bin/rvm use 2.5.0 --default
 
-RUN gem install passenger --no-ri --no-rdoc
 
-RUN passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
 
-RUN ln -s /opt/nginx/sbin/nginx /usr/bin/nginx
 
-RUN gem install bundler --no-ri --no-rdoc
 
-#RUN bundle install 
 
-#RUN mkdir $WORKDIR/public/plugin_assets
 
-#RUN chown -R www-data:www-data $WORKDIR/files $WORKDIR/log $WORKDIR/tmp $WORKDIR/public/plugin_assets $WORKDIR/config.ru
 
-#RUN chmod -R 755 chmod -R 755  $WORKDIR/files  $WORKDIR/log  $WORKDIR/tmp  $WORKDIR/public/plugin_assets
+###################################################################
+#RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+
+#RUN command curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+
+#RUN curl -L https://get.rvm.io | bash -s stable
+
+#RUN ./usr/local/rvm/scripts/rvm
+
+#RUN echo '[[ -s "/usr/local/rvm/scripts/rvm" ]] && source "/usr/local/rvm/scripts/rvm"' >> ~/.bashrc
+
+#RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+
+#RUN ln -s /usr/local/rvm/bin/rvm /usr/bin/rvm
+
+#RUN /usr/local/rvm/bin/rvm get head
+
+#RUN /usr/local/rvm/bin/rvm install ruby-2.3
+
+#RUN apt-get install -y libcurl4-gnutls-dev rubygems ruby-dev
+
+#RUN gem install passenger --no-ri --no-rdoc
+
+#RUN passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
+
+#RUN ln -s /opt/nginx/sbin/nginx /usr/bin/nginx
+
+#RUN gem install bundler --no-ri --no-rdoc
+
 

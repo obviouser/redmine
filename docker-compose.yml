@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_redmine
-    image: ubuntu:18.04
+    image: ubuntu:16.04
     container_name: redmine
     restart: unless-stopped
     tty: true
