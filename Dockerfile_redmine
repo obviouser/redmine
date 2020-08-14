@@ -41,7 +41,7 @@ RUN gem install bundler mysql2 --no-ri --no-rdoc
 
 CMD ["nginx", "-g", "daemon off;"]
 
-
+RUN chown -R 0775 tmp log
 
 ###################################################################
 #RUN command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
