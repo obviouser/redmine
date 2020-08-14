@@ -18,60 +18,34 @@ services:
       - ./redmine:/var/data/redmine
       - ./nginx/redmine.conf:/etc/nginx/conf.d/redmine.conf
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./dbdata/database.yml:/var/data/redmine/config/database.yml 
-#    command: apt-get update && apt-get install -y libmysqlclient-dev git-core subversion imagemagick libmagickwand-dev libcurl4-openssl-dev curl
-#    command: command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-#    command: command curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-#    command: command curl -sSL https://rvm.io/mpapis.asc | gpg --import - && curl -L https://get.rvm.io | bash -s stable
-#    command: source /usr/local/rvm/scripts/rvm && echo '[[ -s "/usr/local/rvm/scripts/rvm" ]] && source "/usr/local/rvm/scripts/rvm"' >> ~/.bashrc
-#    command: command curl -sSL https://rvm.io/mpapis.asc | gpg --import - && rvm get head && rvm install ruby-2.3
-#    command: apt-get install -y libcurl4-gnutls-dev
-#    command: gem install passenger --no-ri --no-rdoc
-#    command: passenger-install-nginx-module --auto --auto-download --prefix=/opt/nginx
-#    command: /opt/nginx/sbin/nginx
+      - ./config/database.yml:/var/data/redmine/config/database.yml 
     ports:
       - "80:80"
       - "443:443"
     networks:
       - app-network
-  #Nginx Service
-#  webserver:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile_nginx
-#    image: nginx:alpine
-#    container_name: webserver
-#    restart: unless-stopped
-#    tty: true
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    volumes:
-#      - ./nginx/nginx.conf:/opt/nginx/conf/nginx.conf
-#    networks:
-#      - app-network
 
   #MySQL Service
-#  db:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile_mysql
-#    image: mysql:5.7.22
-#    container_name: db
-#    restart: unless-stopped
-#    tty: true
-#    ports:
-#      - "3306:3306"
-#    environment:
-#      MYSQL_DATABASE: redmine
-#      MYSQL_ROOT_PASSWORD: root
-#      SERVICE_TAGS: dev
-#      SERVICE_NAME: mysql
-#    volumes:
-#      - dbdata:/var/lib/mysql/
-#      - redmine:/var/data/redmine/	
-#    networks:
-#      - app-network
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile_mysql
+    image: mysql:5.7.31
+    container_name: db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: redmine
+      MYSQL_ROOT_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./dbdata:/var/lib/mysql
+      - ./redmine:/var/data/redmine
+    networks:
+      - app-network
 
 #Docker Networks
 networks:
